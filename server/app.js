@@ -40,8 +40,7 @@ app.get('/links',
     });
 });
 
-app.post('/links', 
-(req, res, next) => {
+app.post('/links', (req, res, next) => {
   var url = req.body.url;
   if (!models.Links.isValidUrl(url)) {
     // send back a 404 if link is not valid
@@ -79,8 +78,36 @@ app.post('/links',
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
+app.post('/signup', (req, res) => {
+  models.Users.get({ username: req.body.username })
+    .then(user => {
+      if(user !== undefined && user.username === req.body.username) {
+        res.redirect('/signup');
+        res.status(301).send();
+      } else {
+        models.Users.create(req.body)
+          .then(() => {
+            res.redirect('/');
+            res.status(201).send();
+          });
+      }
+    });
+});
 
+app.post('/login', (req, res) =>{
 
+  models.Users.get({ username: req.body.username })
+    .then(user => {
+      if(user !== undefined && user.username === req.body.username && 
+        user.password === utils(req.body.password)) {
+        res.redirect('/');
+        res.status(200).send();
+      } else {
+        res.redirect('/login');
+        res.status(200).send();
+      }
+    });
+})
 
 /************************************************************/
 // Handle the code parameter route last - if all other routes fail

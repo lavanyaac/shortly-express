@@ -30,6 +30,7 @@ class Model {
   }
 
   create(options) {
+    //console.log('The table is: ', this.tablename);
     let queryString = `INSERT INTO ${this.tablename} SET ?`;
     return executeQuery(queryString, options);
   }

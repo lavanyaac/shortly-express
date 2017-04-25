@@ -39,16 +39,16 @@ describe('', function() {
     /* TODO: Update user and password if different than on your local machine            */
     /*************************************************************************************/
     db = mysql.createConnection({
-      user: 'student',
-      password: 'student',
+      user: 'root',
+      password: 'plantlife',
       database: 'shortly'
     });
+    console.log('*********************');
 
     /**************************************************************************************/
     /* TODO: If you create a new MySQL tables, add it to the tablenames collection below. */
     /**************************************************************************************/
-    var tablenames = ['links', 'clicks'
-];
+    var tablenames = ['links', 'clicks', 'users'];
 
     db.connect(function(err) {
       if (err) { return done(err); }
@@ -56,6 +56,7 @@ describe('', function() {
        * (or repeated runs of the tests) won't screw each other up: */
       clearDB(db, tablenames, function() {
         server = app.listen(port, done);
+        //console.log('********dbconnect*********', db);
       });
     });
 
@@ -65,6 +66,7 @@ describe('', function() {
   describe('Database Schema:', function() {
     it('contains a users table', function(done) {
       var queryString = 'SELECT * FROM users';
+      //console.log('******dbinfirst*****', tablenames);
       db.query(queryString, function(err, results) {
         if (err) { return done(err); }
 
@@ -125,7 +127,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Account Creation:', function() {
+  describe('Account Creation:', function() {
 
     it('signup creates a new user record', function(done) {
       var options = {
@@ -177,8 +179,8 @@ describe('', function() {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/signup',
         'json': {
-          'username': 'Samantha',
-          'password': 'Samantha'
+          'username': 'Bob',
+          'password': 'Bob'
         }
       };
 
@@ -210,7 +212,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Account Login:', function() {
+  describe('Account Login:', function() {
 
     beforeEach(function(done) {
       var options = {
@@ -279,7 +281,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Sessions Schema:', function() {
+  describe('Sessions Schema:', function() {
     it('contains a sessions table', function(done) {
       var queryString = 'SELECT * FROM sessions';
       db.query(queryString, function(err, results) {
@@ -643,7 +645,7 @@ describe('', function() {
       }
     };
 
-    xbeforeEach(function(done) {
+    beforeEach(function(done) {
       var options = {
         'method': 'POST',
         'followAllRedirects': true,
