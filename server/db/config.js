@@ -40,9 +40,9 @@ module.exports = (db) => {
         CREATE TABLE IF NOT EXISTS sessions (
           id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
           hash VARCHAR(255),
-          user_id INT NOT NULL,
-          timestamp TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id) 
+          salt VARCHAR(255),
+          user_id INT NULL,
+          timestamp TIMESTAMP 
         );`);
     })
   /************************************************************/

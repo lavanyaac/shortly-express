@@ -18,9 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files from ../public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
+app.use(require('./middleware/cookieParser'));
+app.use(Auth.createSession);
 
-app.get('/', 
-(req, res) => {
+app.get('/', (req, res) => {
   res.render('index');
 });
 
@@ -95,11 +96,10 @@ app.post('/signup', (req, res) => {
 });
 
 app.post('/login', (req, res) =>{
-
   models.Users.get({ username: req.body.username })
     .then(user => {
       if(user !== undefined && user.username === req.body.username && 
-        user.password === utils(req.body.password)) {
+        user.password === utils.hashPassword(req.body.password)) {
         res.redirect('/');
         res.status(200).send();
       } else {

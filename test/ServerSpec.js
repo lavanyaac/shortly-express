@@ -43,12 +43,11 @@ describe('', function() {
       password: 'plantlife',
       database: 'shortly'
     });
-    console.log('*********************');
 
     /**************************************************************************************/
     /* TODO: If you create a new MySQL tables, add it to the tablenames collection below. */
     /**************************************************************************************/
-    var tablenames = ['links', 'clicks', 'users'];
+    var tablenames = ['links', 'clicks', 'users', 'sessions'];
 
     db.connect(function(err) {
       if (err) { return done(err); }
@@ -56,7 +55,6 @@ describe('', function() {
        * (or repeated runs of the tests) won't screw each other up: */
       clearDB(db, tablenames, function() {
         server = app.listen(port, done);
-        //console.log('********dbconnect*********', db);
       });
     });
 
@@ -66,7 +64,6 @@ describe('', function() {
   describe('Database Schema:', function() {
     it('contains a users table', function(done) {
       var queryString = 'SELECT * FROM users';
-      //console.log('******dbinfirst*****', tablenames);
       db.query(queryString, function(err, results) {
         if (err) { return done(err); }
 
@@ -330,7 +327,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Express Middleware', function() {
+  describe('Express Middleware', function() {
     var cookieParser = require('../server/middleware/cookieParser.js');
     var createSession = require('../server/middleware/auth.js').createSession;
 
@@ -518,7 +515,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Sessions and cookies', function() {
+  describe('Sessions and cookies', function() {
     var requestWithSession;
     var cookieJar;
 
